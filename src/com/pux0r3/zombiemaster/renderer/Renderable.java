@@ -1,13 +1,21 @@
 package com.pux0r3.zombiemaster.renderer;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
 import com.pux0r3.zombiemaster.math.Vector3;
 
+/**
+ * Represents an object that can be drawn by our rendering system
+ * 
+ * @author Patrick
+ *
+ */
 public class Renderable {
 	private Vector3[] mVertices;
-	private int mIndices;
+	private int[] mIndices;
 	
 	private boolean mVertexBufferDirty = true;
 	private FloatBuffer mVertexBuffer;
@@ -15,6 +23,11 @@ public class Renderable {
 	private boolean mIndexBufferDirty = true;
 	private IntBuffer mIndexBuffer;
 	
+	/**
+	 * Public accessor for the vertex buffer (ready for OpenGL ES rendering)
+	 * 
+	 * @return The vertices, ready to render
+	 */
 	public FloatBuffer getVertexBuffer() {
 		if (mVertexBufferDirty) {
 			regenerateVertexBuffer();
@@ -22,11 +35,29 @@ public class Renderable {
 		return mVertexBuffer;
 	}
 	
+	/**
+	 * Regenerates the vertex buffer (if dirty)
+	 */
 	private void regenerateVertexBuffer() {
-		// TODO Auto-generated method stub
+		ByteBuffer bb = ByteBuffer.allocateDirect(mVertices.length * 3 * 4);
+		bb.order(ByteOrder.nativeOrder());
+		mVertexBuffer = bb.asFloatBuffer();
 		
+		for(Vector3 v : mVertices) {
+			mVertexBuffer.put(v.X);
+			mVertexBuffer.put(v.Y);
+			mVertexBuffer.put(v.Z);
+		}
+		mVertexBuffer.position(0);
+		
+		mVertexBufferDirty = false;
 	}
 
+	/**
+	 * Retrieves the index buffer for rendering
+	 * 
+	 * @return The index buffer, prepared for GLES 2.0
+	 */
 	public IntBuffer getIndexBuffer() {
 		if (mIndexBufferDirty) {
 			regenerateIndexBuffer();
@@ -34,8 +65,17 @@ public class Renderable {
 		return mIndexBuffer;
 	}
 
+	/**
+	 * Regenerates the index buffer for GLES 2.0 rendering
+	 */
 	private void regenerateIndexBuffer() {
-		// TODO Auto-generated method stub
+		ByteBuffer bb = ByteBuffer.allocateDirect(mIndices.length * 4);
+		bb.order(ByteOrder.nativeOrder());
+		mIndexBuffer = bb.asIntBuffer();
+
+		mIndexBuffer.put(mIndices);
+		mIndexBuffer.position(0);
 		
+		mIndexBufferDirty = false;
 	}
 }
