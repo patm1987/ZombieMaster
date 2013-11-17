@@ -4,8 +4,10 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
+import java.util.Vector;
 
 import com.pux0r3.zombiemaster.math.Vector3;
+import com.pux0r3.zombiemaster.renderer.shader.Mat4ShaderPart;
 
 /**
  * Represents an object that can be drawn by our rendering system
@@ -22,6 +24,8 @@ public class Renderable {
 	
 	private boolean mIndexBufferDirty = true;
 	private IntBuffer mIndexBuffer;
+	
+	private Vector<Pass> mRenderPasses = new Vector<Pass>();
 	
 	/**
 	 * Public accessor for the vertex buffer (ready for OpenGL ES rendering)
@@ -77,5 +81,9 @@ public class Renderable {
 		mIndexBuffer.position(0);
 		
 		mIndexBufferDirty = false;
+	}
+	
+	public void addRenderPass(Pass pass) {
+		mRenderPasses.add(pass);
 	}
 }

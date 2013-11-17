@@ -1,4 +1,4 @@
-package com.pux0r3.zombiemaster.renderer;
+package com.pux0r3.zombiemaster.renderer.shader;
 
 import android.opengl.GLES20;
 
@@ -22,6 +22,35 @@ public class Shader {
 		mProgram = generateProgram(mVertex, mFragment);
 		
 		mInitialized = true;
+	}
+	
+	public boolean isIntitialized() {
+		return mInitialized;
+	}
+	
+	public int getVertexShader() {
+		return mVertex;
+	}
+	
+	public int getFragmentShader() {
+		return mFragment;
+	}
+	
+	public int getShader(ShaderType type)
+	{
+		switch(type)
+		{
+		case Vertex:
+			return mVertex;
+			
+		case Fragment:
+			return mFragment;
+		}
+		return kInvalidShader;
+	}
+	
+	public int getProgram() {
+		return mProgram;
 	}
 	
 	private int generateProgram(int vertexShader, int fragmentShader) {
@@ -60,7 +89,7 @@ public class Shader {
 		}
 	}
 
-	private enum ShaderType {
+	public enum ShaderType {
 		Vertex,
 		Fragment
 	}

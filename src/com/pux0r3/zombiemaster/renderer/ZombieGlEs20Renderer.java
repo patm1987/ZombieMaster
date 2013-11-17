@@ -22,6 +22,6 @@ public class ZombieGlEs20Renderer implements Renderer {
 
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-		GLES20.glClearColor(.5f, .5f, .5f, 1f);
+		GLES20.glClearColor(.5f, .5f, 1f, 1f);
 	}
 }

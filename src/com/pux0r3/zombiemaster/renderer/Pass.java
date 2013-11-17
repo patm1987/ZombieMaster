@@ -1,5 +1,7 @@
 package com.pux0r3.zombiemaster.renderer;
 
+import com.pux0r3.zombiemaster.renderer.shader.Shader;
+
 /**
  * Represents a render pass
  * 
